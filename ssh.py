@@ -15,7 +15,7 @@ class SSHSession(object):
     # ssh.put_all('/path/to/local/source/dir','/path/to/remote/destination')
     # ssh.get_all('/path/to/remote/source/dir','/path/to/local/destination')
     # ssh.command('echo "Command to execute"')
-    #
+    
     def __init__(self,hostname,username='root',key_file=None,password=None):
         #
         #  Accepts a file-like object (anything with a readlines() function)  
@@ -111,6 +111,10 @@ class SSHSession(object):
     def get_all(self,remotepath,localpath):
         #  recursively download a full directory
         #  Harder than it sounded at first, since paramiko won't walk
+        #
+        # For the record, something like this would gennerally be faster:
+        # ssh user@host 'tar -cz /source/folder' | tar -xz
+        
         self.sftp.chdir(os.path.split(remotepath)[0])
         parent=os.path.split(remotepath)[1]
         try:
